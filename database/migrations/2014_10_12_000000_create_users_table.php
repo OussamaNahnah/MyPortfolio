@@ -18,9 +18,7 @@ return new class extends Migration
             $table->string('birthday')->nullable();
             $table->string('email')->nullable();      
             $table->string('password');      
-            $table->string('location')->nullable();           
-            $table->string('thumb_img')->nullable();    
-            $table->string('org_img')->nullable();
+            $table->string('location')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
