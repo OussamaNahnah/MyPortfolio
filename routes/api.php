@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfNetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,9 @@ Route::group([
     Route::post('auth/logout',[ AuthController::class,'logout']);
     Route::post('auth/update/{id}',[ AuthController::class,'update']);
     Route::post('auth/updateimage/{id}',[ AuthController::class,'updateimage']);
+
+
+    Route::apiResource('user/{id}/professionalnetwork/', ProfNetController::class) ;
 
 });
 
