@@ -19,8 +19,6 @@ class OtherInfo extends Model
         'id',
         'description',
         'user_id',
-        'icon',
-        'user_id',
     ];
     public function user() : HasOne
     {

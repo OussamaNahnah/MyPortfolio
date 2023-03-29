@@ -51,22 +51,55 @@ class AuthController extends Controller
             ['password'=>bcrypt($request->password)]
         ));
 
+
+        $image=$request->file('image');
+        $image_name=  rand().'.'.$image->getClientOriginalExtension();
+        $user->addMedia($image)
+        ->usingFileName($image_name)
+        ->toMediaCollection('image');
+        return response()->json(
+            [
+             'message'=>'User successfully registred',
+             //'count'=>$user->getMedia('image')->count(),
+            ],200);
+
+       /*
+       
+       
+       
         // upload the image   
         $image=$request->file('image');
         $image_name=  rand().'.'.$image->getClientOriginalExtension();
-        $user->addMedia($image)->usingFileName($image_name)
+        $user->addMedia($image)
+        ->usingFileName($image_name)
         ->toMediaCollection();
 
+        $w1=$user->getMedia('image')->count(); // returns 1
+       $r1= $user->getFirstMediaUrl();
+
+       $image=$request->file('i');
+        $image_name=  rand().'4.'.$image->getClientOriginalExtension();
+        $user->addMedia($image)
+        ->usingFileName($image_name)
+        ->toMediaCollection();
+
+        $w2=$user->getMedia('image')->count(); // returns 1
+        $r2= $user->getFirstMediaUrl();
         return response()->json(
            [
             'message'=>'User successfully registred',
-           ],200);
+            'count'=>$w1,
+            'url'=>$r1,
+            'countd'=>$w2,
+            'urld'=>$r2,
+
+           ],200);*/
 
     }   
 
 
 
-    public function update(Request $request,$id){
+    public function update(Request $request){
 
         // fields validation
            $validator=Validator::make($request->all(),[
@@ -82,7 +115,7 @@ class AuthController extends Controller
                    $validator->errors()->toJson(),400);
            }
            
-           $user =User::find($id);
+           $user =User::find(auth()->user()->id);
            $user->fullname=$request->input('fullname');
            $user->birthday=$request->input('birthday');
            $user->password=bcrypt($request->input('password'));
@@ -100,8 +133,7 @@ class AuthController extends Controller
 
 
 
-       public function updateimage(Request $request,$id){
-
+       public function updateimage(Request $request){
         if(!$request->hasFile('image'))
         {
             return response()->json(
@@ -109,9 +141,19 @@ class AuthController extends Controller
                  'message'=>'No image !',
                 ],400);
             }
+           $user =User::find(auth()->user()->id);
+
+           $image=$request->file('image');
+           $image_name=  rand().'.'.$image->getClientOriginalExtension();
+           $user->addMedia($image)
+           ->usingFileName($image_name)
+        ->toMediaCollection('image');
+
+     //   $img= $user ->addMediaFromRequest('image')
+       // ->toMediaCollection('image');
+
         
-           $user =User::find($id);
-         //  $user->getFirstMedia()->delete();
+        /* //  $user->getFirstMedia()->delete();
            $user->clearMediaCollection();
 
            $image=$request->file('image');
@@ -121,7 +163,7 @@ class AuthController extends Controller
            ->toMediaCollection();
          //  $user->save();
           
-       //  $user->clearMediaCollectionExcept('images', $user->getFirstMedia());
+       //  $user->clearMediaCollectionExcept('images', $user->getFirstMedia());*/
            return response()->json(
               [
                'message'=>'User successfully updated',

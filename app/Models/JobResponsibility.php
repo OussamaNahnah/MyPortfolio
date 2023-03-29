@@ -16,9 +16,8 @@ class JobResponsibility extends Model
     protected $fillable = [
         'id',
         'responsibility',
-        'user_id',
-        'icon',
-        'user_id',
+        'experience_id',
+
     ];
 
     public function experiences(): BelongsTo

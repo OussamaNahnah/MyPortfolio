@@ -89,11 +89,11 @@ class User extends Authenticatable implements JWTSubject , HasMedia
         return [];
     }
 
-    public function registerMediaCollections(): void
+ /*   public function registerMediaCollections(): void
     {
         $this
-            ->addMediaCollection()
-            ->singleFile();
+            ->addMediaCollection('image');
+         //   ->singleFile();
     }
     public function registerMediaConversions(Media $media = null): void
     {
@@ -101,7 +101,27 @@ class User extends Authenticatable implements JWTSubject , HasMedia
             ->addMediaConversion('thumb')
             ->fit(Manipulations::FIT_CROP, 300, 300)
             ->nonQueued();
+    /// $this
+//          ->addMediaConversion('thumb')
+//          ->fit(Manipulations::FIT_CROP, 300, 300)
+        //  ->nonQueued();
+//     
     }
+*/   
+
+
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection("image")
+            ->singleFile()
+            ->registerMediaConversions(function (Media $media) {
+                $this
+                    ->addMediaConversion('thumb')
+                    ->width(300)
+                    ->height(300);
+                });
+    } 
 
      public function professional_Networks(): HasMany
     {
@@ -131,4 +151,5 @@ class User extends Authenticatable implements JWTSubject , HasMedia
     {
         return $this->hasOne(OtherInfo::class);
     }
+   
 }
