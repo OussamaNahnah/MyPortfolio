@@ -10,6 +10,8 @@ use App\Http\Controllers\ExpController;
 use App\Http\Controllers\ProjController;
 use App\Http\Controllers\OtherInfoController;
 use App\Http\Controllers\JobResController;
+use App\Http\Controllers\SkillTypeController;
+use App\Http\Controllers\SkillController;
 
 /*
 |--------------------------------------------------------------------------
@@ -89,6 +91,19 @@ Route::group([
         Route::delete('job_responsibility/{id}',[ JobResController::class,'destroy']);
         Route::get('job_responsibilities/{experience_id}',[ JobResController::class,'index']);
         Route::get('job_responsibility/{id}',[ JobResController::class,'show']);
+        //10- Skilltype
+        Route::post('skill_type',[ SkillTypeController::class,'store']);
+        Route::put('skill_type/{id}',[ SkillTypeController::class,'update']);
+        Route::delete('skill_type/{id}',[ SkillTypeController::class,'destroy']);
+        Route::get('skill_types/{user_id}',[ SkillTypeController::class,'index']);
+        Route::get('skill_type/{id}',[ SkillTypeController::class,'show']);
+        //11- Skill
+        Route::post('skill/{experience_id}',[ SkillController::class,'store']);
+        Route::put('skill/{id}',[ SkillController::class,'update']);
+        Route::delete('skill/{id}',[ SkillController::class,'destroy']);
+        Route::get('skills/{skill_type_id}',[ SkillController::class,'index']);
+        Route::get('skill/{id}',[ SkillController::class,'show']);
+
 
         // Route::apiResource('user/{id}/professionalnetwork/', ProfNetController::class) ;
 

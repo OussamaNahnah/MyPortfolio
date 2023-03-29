@@ -144,7 +144,7 @@ class JobResController extends Controller
         }
 
 
-        $job_responsibility = JobResponsibility::find($id);
+       $job_responsibility = JobResponsibility::find($id);
        $job_responsibility->responsibility=$request->input('responsibility');
        $job_responsibility->save();
        

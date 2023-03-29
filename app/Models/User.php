@@ -24,6 +24,7 @@ use App\Models\PhoneNumber;
 use App\Models\Experience;
 use App\Models\Project;
 use App\Models\OtherInfo;
+use App\Models\SkillType;
 
 class User extends Authenticatable implements JWTSubject , HasMedia
 {
@@ -146,10 +147,15 @@ class User extends Authenticatable implements JWTSubject , HasMedia
     {
         return $this->hasMany(Project::class);
     }
+    public function skill_types() : HasMany
+    {
+        return $this->hasMany(SkillType::class);
+    }
 
     public function other_infos(): HasOne
     {
         return $this->hasOne(OtherInfo::class);
     }
+    
    
 }
