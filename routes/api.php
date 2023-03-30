@@ -7,11 +7,11 @@ use App\Http\Controllers\ProfNetController;
 use App\Http\Controllers\EduController;
 use App\Http\Controllers\PhoNumController;
 use App\Http\Controllers\ExpController;
-use App\Http\Controllers\ProjController;
 use App\Http\Controllers\OtherInfoController;
 use App\Http\Controllers\JobResController;
 use App\Http\Controllers\SkillTypeController;
 use App\Http\Controllers\SkillController;
+use App\Http\Controllers\ProjController;
 
 /*
 |--------------------------------------------------------------------------
@@ -103,6 +103,17 @@ Route::group([
         Route::delete('skill/{id}',[ SkillController::class,'destroy']);
         Route::get('skills/{skill_type_id}',[ SkillController::class,'index']);
         Route::get('skill/{id}',[ SkillController::class,'show']);
+
+         //12-Projects
+         Route::post('project',[ ProjController::class,'store']);
+         Route::put('project/{id}',[ ProjController::class,'update']);
+         Route::delete('project/{id}',[ ProjController::class,'destroy']);
+         Route::get('projects/{user_id}',[ ProjController::class,'index']);
+         Route::get('project/{id}',[ ProjController::class,'show']);
+
+         Route::post('add_skills_to_project/{project_id}/{skill_id}',[ ProjController::class,'addskills']);
+         Route::delete('add_skills_to_project/{project_id}/{skill_id}',[ ProjController::class,'removeskills']); 
+    
 
 
         // Route::apiResource('user/{id}/professionalnetwork/', ProfNetController::class) ;
