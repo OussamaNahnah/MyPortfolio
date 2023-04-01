@@ -26,7 +26,9 @@ use App\Models\Project;
 use App\Models\OtherInfo;
 use App\Models\SkillType;
 
-class User extends Authenticatable implements JWTSubject , HasMedia
+use Filament\Models\Contracts\FilamentUser;
+
+class User extends Authenticatable implements JWTSubject , HasMedia,FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable,InteractsWithMedia;
 
@@ -157,5 +159,8 @@ class User extends Authenticatable implements JWTSubject , HasMedia
         return $this->hasOne(OtherInfo::class);
     }
     
-   
+    public function canAccessFilament(): bool
+    {
+        return true;//str_ends_with($this->email, 'oussamanh7@gmail.com') && $this->hasVerifiedEmail();
+    }
 }
