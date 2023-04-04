@@ -14,8 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash; 
 use Filament\Forms\Components\DatePicker;
 
 class UserResource extends Resource
@@ -36,7 +35,7 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('password') ->password()
                 ->dehydrateStateUsing(fn ($state) => Hash::make($state))
                 ->dehydrated(fn ($state) => filled($state)),
-                SpatieMediaLibraryFileUpload::make('image')->collection('image')->required(),
+                SpatieMediaLibraryFileUpload::make('image')->collection('image'),
             ]);
     }
 
@@ -77,5 +76,9 @@ class UserResource extends Resource
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
-    }    
+    } 
+    /*    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('id', 10);
+    }*/
 }

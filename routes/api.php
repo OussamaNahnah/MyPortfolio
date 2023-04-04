@@ -13,6 +13,7 @@ use App\Http\Controllers\SkillTypeController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\ProjController;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes

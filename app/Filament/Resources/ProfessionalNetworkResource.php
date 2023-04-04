@@ -15,6 +15,9 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 use Filament\Forms\Components\BelongsToSelect;
 
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
+
 class ProfessionalNetworkResource extends Resource
 {
     protected static ?string $model = ProfessionalNetwork::class;
@@ -28,7 +31,8 @@ class ProfessionalNetworkResource extends Resource
               //  Forms\Components\TextInput::make('id')->required(),
                 Forms\Components\TextInput::make('name')->required(),
                 Forms\Components\TextInput::make('link')->required() ->url(),
-                BelongsToSelect::make('user_id')->relationship('user', 'fullname')->required(),
+                BelongsToSelect::make('user_id')->relationship('user', 'username')->required(),
+                SpatieMediaLibraryFileUpload::make('icon')->collection('icon'),
             ]);
     }
 
@@ -37,9 +41,10 @@ class ProfessionalNetworkResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id'),    
-                Tables\Columns\TextColumn::make('user.fullname'), 
+                Tables\Columns\TextColumn::make('user.username'), 
                 Tables\Columns\TextColumn::make('name'),    
                 Tables\Columns\TextColumn::make('link'),
+                SpatieMediaLibraryImageColumn::make('icon')->collection('icon'),
 
             ])
             ->filters([

@@ -15,9 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('description')->nullable();
-            $table->string('link')->nullable();
-            $table->string('thumb_img')->nullable();    
-            $table->string('org_img')->nullable();
+            $table->string('link')->nullable(); 
             $table->foreignId('user_id')
             ->constrained()
             ->onUpdate('cascade')

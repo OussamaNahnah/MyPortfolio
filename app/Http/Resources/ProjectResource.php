@@ -13,7 +13,12 @@ class ProjectResource extends JsonResource
      * @return array<string, mixed>
      */
     public function toArray(Request $request): array
-    {
+    {if(   $this->getMedia('images')->count()!=0){
+        $images=$this->getMedia('images') ;
+      
+   }else{
+       $images='null'; 
+   }
         return [
       
       
@@ -22,6 +27,8 @@ class ProjectResource extends JsonResource
             'description'=>$this->description,
             'link' =>$this->link,
             'user_id'=>$this->user_id,
+            'skills'=>$this->skills()->get(),//->with('name'),
+            'images' =>$images, 
         ];
     }
 }

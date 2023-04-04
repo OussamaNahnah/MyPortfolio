@@ -20,7 +20,7 @@ class JobResponsibility extends Model
 
     ];
 
-    public function experiences(): BelongsTo
+    public function experience(): BelongsTo
     {
         return $this->belongsTo(Experience::class);
     }

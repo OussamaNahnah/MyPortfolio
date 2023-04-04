@@ -37,7 +37,7 @@ class AuthController extends Controller
                 $validator->errors()->toJson(),400);
         }
         
-        // image validation
+     /*   // image validation
         if(!$request->hasFile('image'))
         {
             return response()->json(
@@ -45,18 +45,20 @@ class AuthController extends Controller
                  'message'=>'No image !',
                 ],400);
             }
+            */
         // insert the new user
         $user =User::create(array_merge(
             $validator-> validated(),
             ['password'=>bcrypt($request->password)]
         ));
-
+        if($request->hasFile('image')){
 
         $image=$request->file('image');
         $image_name=  rand().'.'.$image->getClientOriginalExtension();
         $user->addMedia($image)
         ->usingFileName($image_name)
         ->toMediaCollection('image');
+        }
         return response()->json(
             [
              'message'=>'User successfully registred',
