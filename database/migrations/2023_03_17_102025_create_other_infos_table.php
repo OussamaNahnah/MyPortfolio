@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('other_infos', function (Blueprint $table) {
             $table->id();
-            $table->string('description')->nullable();
+            $table->longText('description')->nullable();
             $table->foreignId('user_id')->unique()
             ->constrained()
             ->onUpdate('cascade')

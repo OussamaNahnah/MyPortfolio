@@ -40,6 +40,8 @@ Route::group([
         Route::post('auth/logout',[ AuthController::class,'logout']);
         Route::post('auth/update/',[ AuthController::class,'update']);
         Route::post('auth/updateimage',[ AuthController::class,'updateimage']);
+        Route::get('user/{id}',[ AuthController::class,'show']);
+        Route::get('users/',[ AuthController::class,'index']);
 
         //3-Profissional Network
         Route::post('professional_network',[ ProfNetController::class,'store']);

@@ -2,239 +2,219 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Validator;
 
-use App\Models\User;
-use App\Http\Resources\UserResource;
-
 class AuthController extends Controller
 {
-    public function __construct(){
-        $this->middleware('auth:api',[
-            'except'=>['register','login',],
-        
-        ]);
+    public function __construct()
+    {
+        $this->middleware('auth:api', [
+            'except' => ['register', 'login', 'show', 'index'],
 
+        ]);
     }
-    
 
-    public function register(Request $request){
-
-     // fields validation
-        $validator=Validator::make($request->all(),[
-            'username'=>'required|unique:users',
-            'fullname'=>'required',
-            'birthday'=>'required|date',
-            'email'=>'required|string|email|unique:users',
-            'password'=>'required|string|confirmed|min:6',
-            'location'=>'required',
-
+    public function show($id)
+    {//add the passed variable  $id to data variable to validate
+        $data = [
+            'id' => $id,
+        ];
+        // validation fields
+        $validator = Validator::make($data, [
+            'id' => 'required|numeric|exists:App\Models\User,id',
         ]);
-             
-        if($validator->fails()){
+        //return failed validation
+        if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(),400);
+                $validator->errors()->toJson(), 400);
         }
-        
-     /*   // image validation
-        if(!$request->hasFile('image'))
-        {
-            return response()->json(
-                [
-                 'message'=>'No image !',
-                ],400);
-            }
-            */
-        // insert the new user
-        $user =User::create(array_merge(
-            $validator-> validated(),
-            ['password'=>bcrypt($request->password)]
-        ));
-        if($request->hasFile('image')){
-
-        $image=$request->file('image');
-        $image_name=  rand().'.'.$image->getClientOriginalExtension();
-        $user->addMedia($image)
-        ->usingFileName($image_name)
-        ->toMediaCollection('image');
-        }
+        $user = User::find($id);
+        //return with successful operation message
         return response()->json(
             [
-             'message'=>'User successfully registred',
-             //'count'=>$user->getMedia('image')->count(),
-            ],200);
+                'message' => 'Get user Successfully',
+                'user' => new UserResource($user),
+            ], 200);
+    }
 
-       /*
-       
-       
-       
-        // upload the image   
-        $image=$request->file('image');
-        $image_name=  rand().'.'.$image->getClientOriginalExtension();
-        $user->addMedia($image)
-        ->usingFileName($image_name)
-        ->toMediaCollection();
-
-        $w1=$user->getMedia('image')->count(); // returns 1
-       $r1= $user->getFirstMediaUrl();
-
-       $image=$request->file('i');
-        $image_name=  rand().'4.'.$image->getClientOriginalExtension();
-        $user->addMedia($image)
-        ->usingFileName($image_name)
-        ->toMediaCollection();
-
-        $w2=$user->getMedia('image')->count(); // returns 1
-        $r2= $user->getFirstMediaUrl();
+    public function index()
+    {
+        $users = User::paginate(4);
+        //return with successful operation message
         return response()->json(
-           [
-            'message'=>'User successfully registred',
-            'count'=>$w1,
-            'url'=>$r1,
-            'countd'=>$w2,
-            'urld'=>$r2,
+            [
+                'message' => 'Get Users  Successfully (pagination of 4 users)',
+                'user' => UserResource::collection($users),
+            ], 200);
+    }
 
-           ],200);*/
+    public function register(Request $request)
+    {
+        // validation fields
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|unique:users',
+            'fullname' => 'required',
+            'birthday' => 'required|date',
+            'email' => 'required|string|email|unique:users',
+            'location' => 'required',
+            'password' => 'required|string|confirmed|min:6',
+            'bio' => 'required ',
 
-    }   
-
-
-
-    public function update(Request $request){
-
-        // fields validation
-           $validator=Validator::make($request->all(),[
-               'fullname'=>'required',
-               'birthday'=>'required|date',
-               'password'=>'required|string|confirmed|min:6',
-               'location'=>'required',
-   
-           ]);
-                
-           if($validator->fails()){
-               return response()->json(
-                   $validator->errors()->toJson(),400);
-           }
-           
-           $user =User::find(auth()->user()->id);
-           $user->fullname=$request->input('fullname');
-           $user->birthday=$request->input('birthday');
-           $user->password=bcrypt($request->input('password'));
-           $user->location=$request->input('location');
-           $user->save();
-          
-   
-           return response()->json(
-              [
-               'message'=>'User successfully updatedx',
-               'user'=>new UserResource($user),
-              ],200);
-   
-       }   
-
-
-
-       public function updateimage(Request $request){
-        if(!$request->hasFile('image'))
-        {
+        ]);
+        //return failed validation
+        if ($validator->fails()) {
             return response()->json(
-                [
-                 'message'=>'No image !',
-                ],400);
-            }
-           $user =User::find(auth()->user()->id);
+                $validator->errors()->toJson(), 400);
+        }
 
-           $image=$request->file('image');
-           $image_name=  rand().'.'.$image->getClientOriginalExtension();
+        // insert the new user
+        $user = User::create(array_merge(
+            $validator->validated(),
+            ['password' => bcrypt($request->password)]
+        ));
+        // insert the image if existe
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $image_name = rand().'.'.$image->getClientOriginalExtension();
+            $user->addMedia($image)
+            ->usingFileName($image_name)
+            ->toMediaCollection('image');
+        }
+
+        //return with successful operation message
+        return response()->json(
+            [
+                'message' => 'User successfully registred',
+                //'count'=>$user->getMedia('image')->count(),
+            ], 200);
+    }
+
+    public function update(Request $request)
+    {
+        // validation fields
+        $validator = Validator::make($request->all(), [
+            'username' => 'unique:users',
+            'birthday' => 'date',
+            'password' => 'string|confirmed|min:6',
+
+        ]);
+        //return failed validation
+        if ($validator->fails()) {
+            return response()->json(
+                $validator->errors()->toJson(), 400);
+        }
+        // update the user
+        $user = User::find(auth()->user()->id);
+        if ($request->has('username')) {
+            $user->username = $request->input('username');
+        }
+        if ($request->has('fullname')) {
+            $user->fullname = $request->input('fullname');
+        }
+        if ($request->has('bio')) {
+            $user->bio = $request->input('bio');
+        }
+        if ($request->has('birthday')) {
+            $user->birthday = $request->input('birthday');
+        }
+        if ($request->has('password')) {
+            $user->password = bcrypt($request->input('password'));
+        }
+        if ($request->has('location')) {
+            $user->location = $request->input('location');
+        }
+        $user->save();
+
+        //return with successful operation message
+        return response()->json(
+            [
+                'message' => 'User successfully updated',
+                'user' => new UserResource($user),
+            ], 200);
+    }
+
+       public function updateimage(Request $request)
+       {
+           // image validation
+           if (! $request->hasFile('image')) {
+               return response()->json(
+                   [
+                       'message' => 'No image !',
+                   ], 400);
+           }
+           //the the user instance
+           $user = User::find(auth()->user()->id);
+           //update the image
+           $image = $request->file('image');
+           $image_name = rand().'.'.$image->getClientOriginalExtension();
            $user->addMedia($image)
            ->usingFileName($image_name)
         ->toMediaCollection('image');
 
-     //   $img= $user ->addMediaFromRequest('image')
-       // ->toMediaCollection('image');
-
-        
-        /* //  $user->getFirstMedia()->delete();
-           $user->clearMediaCollection();
-
-           $image=$request->file('image');
-           $image_name=  rand().'.'.$image->getClientOriginalExtension();
-           $user->addMedia($image)
-           ->usingFileName($image_name)
-           ->toMediaCollection();
-         //  $user->save();
-          
-       //  $user->clearMediaCollectionExcept('images', $user->getFirstMedia());*/
+           //return with successful operation message
            return response()->json(
-              [
-               'message'=>'User successfully updated',
-               'user'=>new UserResource($user),
-              ],200);
-   
-       }   
-    public function login(Request $request){
+               [
+                   'message' => 'User successfully updated',
+                   'user' => new UserResource($user),
+               ], 200);
+       }
 
-        $validator=Validator::make($request->all(),[
-            'email'=>'required|email',
-            'password'=>'required|string|min:6'
+    public function login(Request $request)
+    {
+        // validation fields
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|string|min:6',
 
         ]);
-       
-        if($validator->fails()){
+
+        //return failed validation
+        if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(),422);
-
+                $validator->errors()->toJson(), 422);
         }
-        if(!$token=auth()->attempt($validator->validated())){
+        ////return failed authentication
+        if (! $token = auth()->attempt($validator->validated())) {
             return response()->json([
-                'errer'=>'Unauthorized'
-            ],422);
-
+                'errer' => 'Unauthorized',
+            ], 422);
         }
-        
-        
 
-       
+        //grenerate a new authentication token and return it
         return $this->createNewToken($token);
     }
 
-    public function createNewToken($token){
+    public function createNewToken($token)
+    {
         return response()->json(
             [
-                'access_token'=>$token,
-                'token_type'=>'bearer',
-                'expires_in'=>auth()->factory()->getTTL()*60,
-                'user'=>auth()->user()
-            ],200);
+                'access_token' => $token,
+                'token_type' => 'bearer',
+                'expires_in' => auth()->factory()->getTTL() * 60,
+                'user' => auth()->user(),
+            ], 200);
     }
 
-    public function profile(Request $request){
-        $user=auth()->user();
-       // $user= Auth::user();
+    public function profile(Request $request)
+    {
+        //return with successful operation message
         return response()->json(
             [
-                'user'=> new UserResource($user),
-             
-            ]
-        
-          ,200);
+                'user' => new UserResource(auth()->user()),
+            ], 200);
+    }
 
-    }   
-
-    public function  logout( ){
-       // Auth::guard('api')->logout();
-       auth()->logout();
-
+    public function logout()
+    {
+        // invalidate the token
+        auth()->logout();
+        //return with successful operation message
         return response()->json(
             [
-                'message'=>'User logged out ',
-               ]
-               ,200);
-
-    }   
-   
-
-
-    
+                'message' => 'User logged out ',
+            ], 200);
+    }
 }

@@ -21,6 +21,7 @@ class ProfessionalNetwork extends Model implements  HasMedia
         'id',
         'name',
         'link',
+        'isprincipal',
         'user_id',
     ];
 

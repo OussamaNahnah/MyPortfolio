@@ -16,6 +16,7 @@ use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Illuminate\Support\Facades\Hash; 
 use Filament\Forms\Components\DatePicker;
+use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 
 class UserResource extends Resource
 {
@@ -24,19 +25,21 @@ class UserResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
     public static function form(Form $form): Form
-    {     
+    {         
         return $form
             ->schema([
-                Forms\Components\TextInput::make('username')->unique(ignoreRecord: true),
+                Forms\Components\TextInput::make('username')->required()->unique(ignoreRecord: true),
                 Forms\Components\TextInput::make('fullname')->required(),
                 DatePicker::make('birthday')->required(), 
-                Forms\Components\TextInput::make('email')->required(),
+                Forms\Components\TextInput::make('email')->required()->unique(ignoreRecord: true),
                 Forms\Components\TextInput::make('location')->required(),              
-                Forms\Components\TextInput::make('password') ->password()
+                Forms\Components\TextInput::make('password') ->password()->minLength(6)
                 ->dehydrateStateUsing(fn ($state) => Hash::make($state))
-                ->dehydrated(fn ($state) => filled($state)),
+                ->dehydrated(fn ($state) => filled($state))   
+                ->required(fn (string $context): bool => $context === 'create'),
+                TinyEditor::make('bio')->required()  , 
                 SpatieMediaLibraryFileUpload::make('image')->collection('image'),
-            ]);
+            ]); 
     }
 
     public static function table(Table $table): Table
@@ -46,6 +49,7 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('id'),    
                 Tables\Columns\TextColumn::make('username'),    
                 Tables\Columns\TextColumn::make('fullname'),
+                Tables\Columns\TextColumn::make('bio'),
                 Tables\Columns\TextColumn::make('birthday'),  
                 Tables\Columns\TextColumn::make('email'), 
                 Tables\Columns\TextColumn::make('location'),  
@@ -56,6 +60,12 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\Action::make('Download Cv Pdf')
+                ->icon('heroicon-o-document-download')
+                ->url(fn (User $record) => route('cv', $record->id))
+                ->openUrlInNewTab(),
+
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
@@ -71,14 +81,20 @@ class UserResource extends Resource
     
     public static function getPages(): array
     {
-        return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
-        ];
+    
+            return [
+                'index' => Pages\ListUsers::route('/'),
+                'create' => Pages\CreateUser::route('/create'),
+                'edit' => Pages\EditUser::route('/{record}/edit'),
+            ]; 
+       
     } 
-    /*    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()->where('id', 10);
+       /*public static function getEloquentQuery(): Builder
+    {if(auth()->user()->isadmin){
+        return parent::getEloquentQuery();
+    }else{
+        return parent::getEloquentQuery()->where('id',auth()->user()->id);
+    }
+        
     }*/
 }

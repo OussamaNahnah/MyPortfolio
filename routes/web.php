@@ -19,8 +19,12 @@ Route::get('/', function () {
 });
 */
 
-Route::get('/',[ UiController::class,'display_me'])->name('index');
-Route::get('/users',[ UiController::class,'display_all'])->name('users');
+
+Route::get('/',[ UiController::class,'index'])->name('index');
 Route::get('/user/{id}',[ UiController::class,'user'])->name('user');
-Route::get('/about',[ UiController::class,'about'])->name('about');
+Route::get('/me',[ UiController::class,'me'])->name('me');
+Route::get('/cv/{id}',[ UiController::class,'cv'])->name('cv');
+Route::get('/dashboard', function () {
+    return redirect('/admin');
+})->name('admin');
 //Route::get('/','App\Http\Controllers\UiController@display_me')

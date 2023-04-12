@@ -12,8 +12,7 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Forms\Components\BelongsToSelect;
-use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
+use Filament\Forms\Components\BelongsToSelect; 
 
 
 
@@ -27,7 +26,7 @@ class OtherInfoResource extends Resource
     {
         return $form
             ->schema([ 
-                TinyEditor::make('description')->required()  , 
+                Forms\Components\TextInput::make('description')->required(),      
                 BelongsToSelect::make('user_id')->relationship('user', 'username')->required()->unique(ignoreRecord: true),
             ]);
     }

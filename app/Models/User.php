@@ -45,10 +45,12 @@ class User extends Authenticatable implements JWTSubject , HasMedia,FilamentUser
         'id',
         'username',
         'fullname',
+        'bio',
         'birthday',
         'email',
         'password',
         'location',
+        'isadmin'
     ];
 
     /**
@@ -162,5 +164,9 @@ class User extends Authenticatable implements JWTSubject , HasMedia,FilamentUser
     public function canAccessFilament(): bool
     {
         return true;//str_ends_with($this->email, 'oussamanh7@gmail.com') && $this->hasVerifiedEmail();
+    }
+    public function principal_link():string
+    {
+      return $this->professional_Networks()->where('isprincipal',true)->first()->link;
     }
 }

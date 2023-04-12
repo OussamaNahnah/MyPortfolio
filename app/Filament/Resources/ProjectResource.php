@@ -29,8 +29,7 @@ class ProjectResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')->required()  , 
                 Forms\Components\TextInput::make('description')->required()  , 
-                Forms\Components\TextInput::make('location')   , 
-                Forms\Components\TextInput::make('link')->required()  ,  
+                Forms\Components\TextInput::make('link')  ,  
                 Select::make('skills')
                 ->multiple()
                 ->relationship('skills', 'name'),

@@ -28,9 +28,11 @@ class ProfNetResource extends JsonResource
                   'id'=> $this->id,
                   'name'=>$this->name,
                   'link'=>$this->link,
-                  'user_id'=>$this->user_id,
+                  'user_id'=>$this->user_id,                  
+                  'isprincipal'=>$this->isprincipal,
                   'org_icon' =>$org_icon,
                   'thumb_icon' => $thumb_icon,
+
                  
               ];
        }

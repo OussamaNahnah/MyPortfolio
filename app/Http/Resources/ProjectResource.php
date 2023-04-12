@@ -4,6 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\MediaResource;
+
 
 class ProjectResource extends JsonResource
 {
@@ -28,7 +30,7 @@ class ProjectResource extends JsonResource
             'link' =>$this->link,
             'user_id'=>$this->user_id,
             'skills'=>$this->skills()->get(),//->with('name'),
-            'images' =>$images, 
+            'images' => MediaResource::collection($this->getMedia('images')), 
         ];
     }
 }
