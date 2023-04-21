@@ -12,7 +12,7 @@ class ProfNetController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', [
+        $this->middleware(['auth:api',  'verified'], [
             'except' => ['index', 'show'],
 
         ]);
@@ -54,9 +54,9 @@ class ProfNetController extends Controller
         // validation fields
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string ',
-            'link' => 'required|url',
-            'isprincipal' => ['booleen', Rule::unique('professional_networks')->where(function ($query) {
+            'name' => 'required|string|min:4|max:255 ',
+            'link' => 'required|string|min:4|max:255|url',
+            'isprincipal' => ['required', 'boolean', Rule::unique('professional_networks')->where(function ($query) {
                 return $query->where('user_id', auth()->user()->id)->where('isprincipal', 1);
             })],
 
@@ -123,9 +123,9 @@ class ProfNetController extends Controller
     public function update(Request $request, string $id)
     {// validation fields
         $validator = Validator::make($request->all(), [
-            'name' => ' string ',
-            'link' => ' url',
-            'isprincipal' => ['booleen', Rule::unique('professional_networks')->where(function ($query) {
+            'name' => ' string|min:4|max:255 ',
+            'link' => ' string|min:4|max:255|url',
+            'isprincipal' => ['boolean', Rule::unique('professional_networks')->where(function ($query) {
                 return $query->where('user_id', auth()->user()->id)->where('isprincipal', 1);
             })],
 
@@ -149,8 +149,8 @@ class ProfNetController extends Controller
         if ($request->has('link')) {
             $pro_net->link = $request->input('link');
         }
-        if ($request->has('link')) {
-            $pro_net->link = $request->input('link');
+        if ($request->has('isprincipal')) {
+            $pro_net->link = $request->input('isprincipal');
         }
 
         $pro_net->save();

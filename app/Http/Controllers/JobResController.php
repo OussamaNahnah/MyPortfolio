@@ -13,7 +13,7 @@ class JobResController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', [
+        $this->middleware(['auth:api',  'verified'], [
             'except' => ['index', 'show'],
         ]);
     }
@@ -60,7 +60,7 @@ class JobResController extends Controller
         // validation fields
         $validator = Validator::make($request->all(), [
 
-            'responsibility' => 'required|string ',
+            'responsibility' => 'required|string|min:4|max:255 ',
 
         ]);
         //return failed validation
@@ -115,7 +115,7 @@ class JobResController extends Controller
     {
         // validation fields
         $validator = Validator::make($request->all(), [
-            'responsibility' => 'required|string ',
+            'responsibility' => 'required|string|min:4|max:255 ',
         ]);
         //return failed validation
         if ($validator->fails()) {

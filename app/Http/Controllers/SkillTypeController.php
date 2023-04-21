@@ -11,7 +11,7 @@ class SkillTypeController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', [
+        $this->middleware(['auth:api',  'verified'], [
             'except' => ['index', 'show'],
 
         ]);
@@ -52,7 +52,7 @@ class SkillTypeController extends Controller
         // validation fields
         $validator = Validator::make($request->all(), [
 
-            'name' => 'required|string ',
+            'name' => 'required|string|min:4|max:255  ',
 
         ]);
         //return failed validation
@@ -107,7 +107,7 @@ class SkillTypeController extends Controller
     public function update(Request $request, string $id)
     {// validation fields
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string ',
+            'name' => 'required|string|min:4|max:255 ',
 
         ]);
         //return failed validation

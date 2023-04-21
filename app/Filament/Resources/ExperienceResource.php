@@ -3,18 +3,15 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ExperienceResource\Pages;
-use App\Filament\Resources\ExperienceResource\RelationManagers;
 use App\Models\Experience;
 use Filament\Forms;
+use Filament\Forms\Components\BelongsToSelect;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Forms\Components\BelongsToSelect;
 
-use Filament\Forms\Components\DatePicker;
 class ExperienceResource extends Resource
 {
     protected static ?string $model = Experience::class;
@@ -22,31 +19,49 @@ class ExperienceResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
     public static function form(Form $form): Form
-    {  return $form
-        ->schema([
-            Forms\Components\TextInput::make('name')->required()  , 
-            Forms\Components\TextInput::make('titlejob')->required()  , 
-            Forms\Components\TextInput::make('location')->required()  , 
-            DatePicker::make('startdate')->required(), 
-            DatePicker::make('enddate')->required(), 
-            BelongsToSelect::make('user_id')->relationship('user', 'username')->required() ,
-        ]);
-}
+    {
+        $ISADMIN = auth()->user()->isadmin;
+
+        return $form
+            ->schema([
+                Forms\Components\TextInput::make('name')->required()
+                ->string()
+                ->minLength(4)
+                ->maxLength(255),
+                Forms\Components\TextInput::make('titlejob')->required()
+                ->string()
+                ->minLength(4)
+                ->maxLength(255),
+                Forms\Components\TextInput::make('location')->required()
+                ->string()
+                ->minLength(4)
+                ->maxLength(255),
+                Forms\Components\TextInput::make('startdate')->required()->rules('date_format:Y-m'),
+                Forms\Components\TextInput::make('enddate')->rules('date_format:Y-m|nullable'),
+                BelongsToSelect::make('user_id')
+               ->relationship('user', 'username', function ($query) use ($ISADMIN) {
+                   if ($ISADMIN) {
+                       return $query;
+                   }
+
+                   return $query->where('id', auth()->user()->id);
+               })
+                ->required(),
+            ]);
+    }
 
 public static function table(Table $table): Table
-{  
-         
-  
+{
     return $table
         ->columns([
-            Tables\Columns\TextColumn::make('id'),    
-            Tables\Columns\TextColumn::make('user.username'), 
-            Tables\Columns\TextColumn::make('name'),  
-            Tables\Columns\TextColumn::make('titlejob'),    
+            Tables\Columns\TextColumn::make('id'),
+            Tables\Columns\TextColumn::make('user.username'),
+            Tables\Columns\TextColumn::make('name'),
+            Tables\Columns\TextColumn::make('titlejob'),
             Tables\Columns\TextColumn::make('location'),
-            Tables\Columns\TextColumn::make('startdate'),    
-            Tables\Columns\TextColumn::make('enddate'), 
-            ])
+            Tables\Columns\TextColumn::make('startdate'),
+            Tables\Columns\TextColumn::make('enddate'),
+        ])
             ->filters([
                 //
             ])
@@ -56,15 +71,15 @@ public static function table(Table $table): Table
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
-    }
-    
+}
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -72,6 +87,14 @@ public static function table(Table $table): Table
             'create' => Pages\CreateExperience::route('/create'),
             'edit' => Pages\EditExperience::route('/{record}/edit'),
         ];
-    }    
-   
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        if (auth()->user()->isadmin) {
+            return parent::getEloquentQuery();
+        } else {
+            return parent::getEloquentQuery()->where('user_id', auth()->user()->id);
+        }
+    }
 }

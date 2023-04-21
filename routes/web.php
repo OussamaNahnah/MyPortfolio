@@ -27,4 +27,9 @@ Route::get('/cv/{id}',[ UiController::class,'cv'])->name('cv');
 Route::get('/dashboard', function () {
     return redirect('/admin');
 })->name('admin');
-//Route::get('/','App\Http\Controllers\UiController@display_me')
+// to void the problem of login route not founf 
+//if the user change hid password form the dashboard
+/*Route::get('/login', function () {
+    return redirect('/admin');
+})->name('login');
+*/

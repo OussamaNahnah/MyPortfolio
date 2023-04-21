@@ -12,7 +12,7 @@ class ProjController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', [
+        $this->middleware(['auth:api',  'verified'], [
             'except' => ['index', 'show'],
 
         ]);
@@ -51,9 +51,9 @@ class ProjController extends Controller
     {
         // validation fields
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string ',
-            'description' => 'required|string ',
-            'link' => 'required|url ',
+            'name' => 'required|string|min:4|max:255 ',
+            'description' => 'required|string|min:4|max:255  ',
+            'link' => 'string|min:4|max:255 |url ',
         ]);
         //return failed validation
         if ($validator->fails()) {
@@ -107,9 +107,9 @@ class ProjController extends Controller
     {
         // validation fields
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string ',
-            'description' => 'required|string ',
-            'link' => 'required|url ',
+            'name' => 'string|min:4|max:255  ',
+            'description' => 'string|min:4|max:255 ',
+            'link' => 'string|max:255| url ',
 
         ]);
         //return failed validation
@@ -125,11 +125,68 @@ class ProjController extends Controller
                 'message' => 'Your id does not exist or this item not your s',
             ], 400);
         }
-
-        $project->name = $request->input('name');
-        $project->description = $request->input('description');
-        $project->link = $request->input('link');
+        if ($request->has('name')) {
+            $project->name = $request->input('name');
+        }
+        if ($request->has('description')) {
+            $project->description = $request->input('description');
+        }
+        if ($request->has('link')) {
+            $project->link = $request->input('link');
+        }
         $project->save();
+        //return with successful operation message
+        return response()->json(
+            [
+                'message' => 'Project successfully updated',
+                'project' => new ProjectResource($project),
+            ], 200);
+    }
+
+    public function addimage(Request $request, $id)
+    {
+        $project = Project::where('id', $id)->where('user_id', auth()->user()->id)->first();
+        //return failed update:because this user havent this project
+        if ($project == null) {
+            return response()->json([
+                'message' => 'Your id does not exist or this item not your s',
+            ], 400);
+        }
+        //remove all the projest's images
+        if (! $request->hasFile('image')) {
+            return response()->json(
+                [
+                    'message' => 'No image !',
+                ], 400);
+        }
+
+        //update the image
+        $image = $request->file('image');
+        $image_name = rand().'.'.$image->getClientOriginalExtension();
+        $project->addMedia($image)
+        ->usingFileName($image_name)
+     ->toMediaCollection('images');
+
+        //return with successful operation message
+        return response()->json(
+            [
+                'message' => 'Project s image successfully added',
+                'project' => new ProjectResource($project),
+            ], 200);
+    }
+
+    public function clearimages($id)
+    {
+        $project = Project::where('id', $id)->where('user_id', auth()->user()->id)->first();
+        //return failed update:because this user havent this project
+        if ($project == null) {
+            return response()->json([
+                'message' => 'Your id does not exist or this item not your s',
+            ], 400);
+        }
+        //remove all the projest's images
+        $project->clearMediaCollection('images');
+
         //return with successful operation message
         return response()->json(
             [

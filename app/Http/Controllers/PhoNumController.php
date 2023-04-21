@@ -11,7 +11,7 @@ class PhoNumController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', [
+        $this->middleware(['auth:api',  'verified'], [
             'except' => ['index', 'show'],
 
         ]);
@@ -50,7 +50,7 @@ class PhoNumController extends Controller
     {// validation fields
         $validator = Validator::make($request->all(), [
 
-            'numberphone' => 'required|string ',
+            'numberphone' => 'required|string|min:4|max:20  ',
 
         ]);
         //return failed validation
@@ -104,7 +104,7 @@ class PhoNumController extends Controller
     public function update(Request $request, string $id)
     {// validation fields
         $validator = Validator::make($request->all(), [
-            'numberphone' => 'required|string ',
+            'numberphone' => 'required|string|min:4|max:20 ',
 
         ]);
         //return failed validation

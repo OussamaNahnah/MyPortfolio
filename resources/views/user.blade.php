@@ -3,24 +3,21 @@
 
 <head>
     <title>My portfolio</title>
-    <meta charset="utf-8" />
-
-    <meta name="author" content="">
+    <meta charset="utf-8" /> 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="/css/kube.min.css" />
     <link rel="stylesheet" href="/css/font-awesome.min.css" />
     <link rel="stylesheet" href="/css/custom.min.css" />
-    <link rel="shortcut icon" href="/img/favicon.png" />
     <link href='https://fonts.googleapis.com/css?family=Playfair+Display+SC:700' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+    <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <style>
         .intro h1:before {
-            /* Edit this with your name or anything else */
+            
             content: 'MY_CV';
         }
 
         .icon {
-            /* Edit this with your name or anything else */
             padding-left: 10px;
         }
 
@@ -96,6 +93,8 @@
                             <li><a href="#other_info">OtherInfromation</a></li>
                         @endif
                         <li><a href="#contact">Contact</a></li>
+
+                        <li><a href="{{ route('cv', [$user->id])}}">Download CV</a></li> 
                         <li><a href="{{ route('index') }}">Back</a></li>
                     </ul>
                 </nav>

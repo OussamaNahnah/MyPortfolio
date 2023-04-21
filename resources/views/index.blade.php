@@ -3,13 +3,13 @@
 
 <head>
     <title>My portfolio</title>
-    <meta charset="utf-8" />
-    <meta name="author" content="">
+    <meta charset="utf-8" /> 
+     <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="/css/kube.min.css" />
     <link rel="stylesheet" href="/css/font-awesome.min.css" />
     <link rel="stylesheet" href="/css/custom.min.css" />
-    <link rel="shortcut icon" href="/img/favicon.png" />
+ 
     <link href='https://fonts.googleapis.com/css?family=Playfair+Display+SC:700' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
 
@@ -126,8 +126,8 @@
                 <nav id="navbar-1" class="navbar item-nav">
                     <ul>
                         <li><a href="{{ route('index') }}">Users</a></li>
-                        <li><a href="{{ route('admin') }}">Admin Dashboard</a></li>
-                        <li><a href="{{ route('me') }}">Contact the programmer</a></li>
+                        <li><a href="{{ route('admin') }}">Dashboard</a></li>
+                        <li><a href="{{ route('me') }}">Contact Me</a></li>
                     </ul>
                 </nav>
             </header>
@@ -154,6 +154,8 @@
                         <h4 class="center"> {{ $user->fullname }}</h4>
                         <!--p class="center maxlength"> {{ '@' . $user->username }} </p-->
                         <center> <a href="{{ route('user', [$user->id]) }}">Read More...</a></center>
+                        <center> <a href="{{ route('cv', [$user->id]) }}">Download CV</a></center>
+      
                     </section>
 
                 </div>

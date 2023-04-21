@@ -11,7 +11,7 @@ class OtherInfoController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', [
+        $this->middleware(['auth:api',  'verified'], [
             'except' => ['index', 'show'],
 
         ]);
@@ -70,7 +70,7 @@ class OtherInfoController extends Controller
 
         $validator = Validator::make($request->all(), [
 
-            'description' => 'required|string ',
+            'description' => 'required|string|min:4|max:255  ',
 
         ]);
         //return failed validation
@@ -98,7 +98,7 @@ class OtherInfoController extends Controller
     public function update(Request $request)
     {// validation fields
         $validator = Validator::make($request->all(), [
-            'description' => 'required|string ',
+            'description' => 'required|string|min:4|max:255  ',
 
         ]);
         //return failed validation

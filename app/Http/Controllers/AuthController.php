@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -11,7 +14,7 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', [
+        $this->middleware(['auth:api',  'verified'], [
             'except' => ['register', 'login', 'show', 'index'],
 
         ]);
@@ -55,26 +58,28 @@ class AuthController extends Controller
     {
         // validation fields
         $validator = Validator::make($request->all(), [
-            'username' => 'required|unique:users',
-            'fullname' => 'required',
-            'birthday' => 'required|date',
-            'email' => 'required|string|email|unique:users',
-            'location' => 'required',
-            'password' => 'required|string|confirmed|min:6',
-            'bio' => 'required ',
+            'username' => 'required|string|min:4|max:255|unique:users',
+            'fullname' => 'required|string|min:4|max:255',
+            'birthday' => 'required|date|date_format:Y-m-d',
+            'email' => 'required|string|min:4|max:255|email|unique:users',
+            'location' => 'required|string|min:4|max:255',
+            'password' => 'required |confirmed|string|min:6|max:255',
+            'bio' => 'required |string|max:2000',
 
         ]);
+
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
                 $validator->errors()->toJson(), 400);
         }
-
         // insert the new user
         $user = User::create(array_merge(
             $validator->validated(),
             ['password' => bcrypt($request->password)]
         ));
+
+        event(new Registered($user));
         // insert the image if existe
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -96,9 +101,12 @@ class AuthController extends Controller
     {
         // validation fields
         $validator = Validator::make($request->all(), [
-            'username' => 'unique:users',
-            'birthday' => 'date',
-            'password' => 'string|confirmed|min:6',
+            'username' => 'string|min:4|max:255|unique:users',
+            'fullname' => 'string|min:4|max:255',
+            'birthday' => 'date|date_format:Y-m-d',
+            'location' => 'string|min:4|max:255',
+            'password' => 'confirmed|string|min:6|max:255',
+            'bio' => 'string|max:2000',
 
         ]);
         //return failed validation
@@ -218,3 +226,36 @@ class AuthController extends Controller
             ], 200);
     }
 }
+
+/*
+    public function sendVerificationEmail(Request $request)
+    {
+        if ($request->user()->hasVerifiedEmail()) {
+            return [
+                'message' => 'Already Verified',
+            ];
+        }
+
+        $request->user()->sendEmailVerificationNotification();
+
+    return ['status' => 'verification-link-sent'];
+    }
+
+    public function verify(EmailVerificationRequest $request)
+    {if (auth()->check()) {
+
+        if ($request->user()->hasVerifiedEmail()) {
+            return [
+                'message' => 'Email already verified',
+            ];
+        }
+
+        if ($request->user()->markEmailAsVerified()) {
+            event(new Verified($request->user()));
+        }
+
+        return [
+            'message' => 'Email has been verified',
+        ];
+    } }
+*/

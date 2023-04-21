@@ -33,15 +33,14 @@ class UiController extends Controller
  
     public function cv($id) 
     {
-    /*	$pdf = PDF::loadView('sample', [
-    		'title' => 'CodeAndDeploy.com Laravel Pdf Tutorial',
-    		'description' => 'This is an example Laravel pdf tutorial.',
-    		'footer' => 'by <a href="https://codeanddeploy.com">codeanddeploy.com</a>'
-    	]);
-    
-        return $pdf->download('sample.pdf');*/
         $user = User::find($id);
-		return view('cv', ['user' => $user]);
+        if($user!=null){
+    	$pdf = PDF::loadView('cv', ['user' => $user]);
+    
+         return $pdf->download('cv.pdf');
+  
+		//return view('cv', ['user' => $user]);
+    }
     }
 
 }

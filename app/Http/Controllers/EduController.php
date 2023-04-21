@@ -11,7 +11,7 @@ class EduController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', [
+        $this->middleware(['auth:api',  'verified'], [
             'except' => ['index', 'show'],
 
         ]);
@@ -50,10 +50,10 @@ class EduController extends Controller
     {// validation fields
         $validator = Validator::make($request->all(), [
 
-            'nameschool' => 'required|string ',
-            'specialization' => 'required|string ',
-            'startdate' => 'required|date ',
-            'enddate' => 'required|date ',
+            'nameschool' => 'required|string|min:4|max:255 ',
+            'specialization' => 'required|string|min:4|max:255',
+            'startdate' => 'required|date|date_format:Y-m',
+            'enddate' => 'date|date_format:Y-m|nullable',
 
         ]);
         //return failed validation
@@ -107,10 +107,11 @@ class EduController extends Controller
     public function update(Request $request, string $id)
     {// validation fields
         $validator = Validator::make($request->all(), [
-            'nameschool' => 'required|string ',
-            'specialization' => 'required|string ',
-            'startdate' => 'required|date ',
-            'enddate' => 'required|date ',
+
+            'nameschool' => 'string|min:4|max:255 ',
+            'specialization' => 'string|min:4|max:255',
+            'startdate' => 'date|date_format:Y-m',
+            'enddate' => 'date|date_format:Y-m|nullable',
 
         ]);
         //return failed validation
@@ -127,11 +128,18 @@ class EduController extends Controller
                 'message' => 'Your id does not exist or this item not your s',
             ], 400);
         }
-
-        $education->nameschool = $request->input('nameschool');
-        $education->specialization = $request->input('specialization');
-        $education->startdate = $request->input('startdate');
-        $education->enddate = $request->input('enddate');
+        if ($request->has('nameschool')) {
+            $education->nameschool = $request->input('nameschool');
+        }
+        if ($request->has('specialization')) {
+            $education->specialization = $request->input('specialization');
+        }
+        if ($request->has('startdate')) {
+            $education->startdate = $request->input('startdate');
+        }
+        if ($request->has('enddate')) {
+            $education->enddate = $request->input('enddate');
+        }
         $education->save();
         //return with successful operation message
         return response()->json(

@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rules\Unique;
 
 class ProfessionalNetworkResource extends Resource
@@ -23,10 +24,18 @@ class ProfessionalNetworkResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $ISADMIN = auth()->user()->isadmin;
+
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')->required(),
-                Forms\Components\TextInput::make('link')->required()->url(),
+                Forms\Components\TextInput::make('name')->required()
+                ->string()
+                ->minLength(4)
+                ->maxLength(255),
+                Forms\Components\TextInput::make('link')->required()
+                ->string()
+                ->minLength(4)
+                ->maxLength(255)->url(),
                 Toggle::make('isprincipal')
                 ->onColor('success')
                 ->offColor('danger')
@@ -38,7 +47,14 @@ class ProfessionalNetworkResource extends Resource
                 //->required()
                 ,
 
-                BelongsToSelect::make('user_id')->relationship('user', 'username')->required(),
+                BelongsToSelect::make('user_id')
+                ->relationship('user', 'username', function ($query) use ($ISADMIN) {
+                    if ($ISADMIN) {
+                        return $query;
+                    }
+
+                    return $query->where('id', auth()->user()->id);
+                }),
                 SpatieMediaLibraryFileUpload::make('icon')->collection('icon'),
             ]);
     }
@@ -87,4 +103,20 @@ class ProfessionalNetworkResource extends Resource
             'edit' => Pages\EditProfessionalNetwork::route('/{record}/edit'),
         ];
     }
+
+    public static function getEloquentQuery(): Builder
+    {
+        if (auth()->user()->isadmin) {
+            return parent::getEloquentQuery();
+        } else {
+            return parent::getEloquentQuery()->where('user_id', auth()->user()->id);
+        }
+    }
 }
+
+/*
+Components\BelongsToSelect::make('category_id')
+    ->relationship('category', 'name', function ($query) {
+        return $query->where('is_featured', true);
+    });
+username*/

@@ -11,7 +11,7 @@ class ExpController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', [
+        $this->middleware(['auth:api',  'verified'], [
             'except' => ['index', 'show'],
 
         ]);
@@ -49,11 +49,11 @@ class ExpController extends Controller
     public function store(Request $request)
     {// validation fields
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string ',
-            'titlejob' => 'required|string ',
-            'location' => 'required|string ',
-            'startdate' => 'required|date ',
-            'enddate' => 'required|date ',
+            'name' => 'required|string|min:4|max:255 ',
+            'titlejob' => 'required|string|min:4|max:255',
+            'location' => 'required|string|min:4|max:255',
+            'startdate' => 'required|date|date_format:Y-m ',
+            'enddate' => 'date|date_format:Y-m|nullable ',
 
         ]);
         //return failed validation
@@ -108,11 +108,11 @@ class ExpController extends Controller
     {// validation fields
         $validator = Validator::make($request->all(), [
 
-            'name' => 'required|string ',
-            'titlejob' => 'required|string ',
-            'location' => 'required|string ',
-            'startdate' => 'required|date ',
-            'enddate' => 'required|date ',
+            'name' => ' string|min:4|max:255 ',
+            'titlejob' => 'string|min:4|max:255  ',
+            'location' => 'string|min:4|max:255  ',
+            'startdate' => 'date|date_format:Y-m ',
+            'enddate' => 'date|date_format:Y-m|nullable',
 
         ]);
         //return failed validation
@@ -129,12 +129,21 @@ class ExpController extends Controller
                 'message' => 'Your id does not exist or this item not your s',
             ], 400);
         }
-
-        $experience->name = $request->input('name');
-        $experience->titlejob = $request->input('titlejob');
-        $experience->location = $request->input('location');
-        $experience->startdate = $request->input('startdate');
-        $experience->enddate = $request->input('enddate');
+        if ($request->has('name')) {
+            $experience->name = $request->input('name');
+        }
+        if ($request->has('titlejob')) {
+            $experience->titlejob = $request->input('titlejob');
+        }
+        if ($request->has('location')) {
+            $experience->location = $request->input('location');
+        }
+        if ($request->has('startdate')) {
+            $experience->startdate = $request->input('startdate');
+        }
+        if ($request->has('enddate')) {
+            $experience->enddate = $request->input('enddate');
+        }
         $experience->save();
         //return with successful operation message
         return response()->json(

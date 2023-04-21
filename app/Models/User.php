@@ -25,10 +25,11 @@ use App\Models\Experience;
 use App\Models\Project;
 use App\Models\OtherInfo;
 use App\Models\SkillType;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use Filament\Models\Contracts\FilamentUser;
 
-class User extends Authenticatable implements JWTSubject , HasMedia,FilamentUser
+class User extends Authenticatable implements JWTSubject , HasMedia,FilamentUser, MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable,InteractsWithMedia;
 
@@ -167,6 +168,12 @@ class User extends Authenticatable implements JWTSubject , HasMedia,FilamentUser
     }
     public function principal_link():string
     {
-      return $this->professional_Networks()->where('isprincipal',true)->first()->link;
+      $principal_pro_net=$this->professional_Networks()->where('isprincipal',true)->first();
+      if($principal_pro_net==null){
+      return '';
+      }
+      else{
+      return $principal_pro_net->link;
+      }
     }
 }

@@ -3,16 +3,14 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\JobResponsibilityResource\Pages;
-use App\Filament\Resources\JobResponsibilityResource\RelationManagers;
 use App\Models\JobResponsibility;
 use Filament\Forms;
+use Filament\Forms\Components\BelongsToSelect;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Forms\Components\BelongsToSelect;
 
 class JobResponsibilityResource extends Resource
 {
@@ -22,25 +20,35 @@ class JobResponsibilityResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $ISADMIN = auth()->user()->isadmin;
+
         return $form
             ->schema([
-                Forms\Components\TextInput::make('responsibility')->required()  ,  
-                
-                BelongsToSelect::make('experience_id')->relationship('experience', 'id')->required() 
+                Forms\Components\TextInput::make('responsibility')->required()
+                ->string()
+                ->minLength(4)
+                ->maxLength(255),
+
+                BelongsToSelect::make('experience_id')
+                ->relationship('experience', 'id', function ($query) use ($ISADMIN) {
+                    if ($ISADMIN) {
+                        return $query;
+                    }
+
+                    return $query->where('user_id', auth()->user()->id);
+                })
+                 ->required(),
             ]);
     }
-    
+
     public static function table(Table $table): Table
-    {  
-             
-      
+    {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id'),    
-                Tables\Columns\TextColumn::make('experience.name'), 
-                Tables\Columns\TextColumn::make('responsibility'),  
+                Tables\Columns\TextColumn::make('id'),
+                Tables\Columns\TextColumn::make('experience.name'),
+                Tables\Columns\TextColumn::make('responsibility'),
 
- 
             ])
             ->filters([
                 //
@@ -52,14 +60,14 @@ class JobResponsibilityResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -67,5 +75,16 @@ class JobResponsibilityResource extends Resource
             'create' => Pages\CreateJobResponsibility::route('/create'),
             'edit' => Pages\EditJobResponsibility::route('/{record}/edit'),
         ];
-    }    
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        if (auth()->user()->isadmin) {
+            return parent::getEloquentQuery();
+        } else {
+            return parent::getEloquentQuery()->whereHas('experience', function ($q) {
+                $q->where('experiences.user_id', auth()->user()->id);
+            });
+        }
+    }
 }
