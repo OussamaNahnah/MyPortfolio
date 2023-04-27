@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UiController;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,9 +26,10 @@ Route::get('/cv/{id}',[ UiController::class,'cv'])->name('cv');
 Route::get('/dashboard', function () {
     return redirect('/admin');
 })->name('admin');
+
+
 // to void the problem of login route not founf 
 //if the user change hid password form the dashboard
-/*Route::get('/login', function () {
+Route::get('/login', function () {
     return redirect('/admin');
 })->name('login');
-*/
