@@ -4,7 +4,7 @@
  **Myportfolio**  is a web application that allows users to create a professional portfolio and showcase their work experience, skills, and projects. Some of the key features of MyPortfolio include:
 
 -   User authentication: Users can create a private account and verify their email address to access the application.
--   Admin panel: Admins can manage all the data and profiles from a dedicated admin panel.
+-   Admin panel: Admins can manage all the data and profiles from a dedicated admin panel ,but a simple user can manage their data only.
 -   Portfolio display: Users can present their data in a visually appealing way and showcase their work in various formats such as images, videos, and documents.
 -   Downloadable CV: Users can download their CV in PDF format.
 -   REST API: **MyPortfolio**  provides a REST API with over 54 requests for developers who want to create their own front-end.
