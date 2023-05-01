@@ -16,7 +16,11 @@ class OtherInfoResource extends Resource
 {
     protected static ?string $model = OtherInfo::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-information-circle';
+
+    protected static ?string $navigationGroup = 'Other Infromation';
+    protected static ?int $navigationSort = 4;
+ 
 
     public static function form(Form $form): Form
     {

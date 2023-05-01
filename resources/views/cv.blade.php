@@ -16,11 +16,16 @@
 
       body {
           font-family: "Comfortaa";
-          
+          font-size: 14px;
           color:#454545;
       }
       .name {
           font-family: "Raleway";
+          font-size: 40px;
+         
+      }
+      a{
+        color:#454545;
       }
       </style>
   </head>
@@ -82,6 +87,30 @@
 @endforeach 
 
 
+
+
+
+
+@if ($user->projects->count() != 0)
+      
+<h3>Projects</h3>
+@foreach ($user->projects as $project)
+
+<p><a href="{{ $project->link }}">{{ $project->name }}</a></p>
+{{ $project->description }}</br>
+<p>Used skills:
+ @foreach ($project->skills as $skill)
+{{ $skill->name .' '}}
+@endforeach
+
+    </p>
+
+
+@endforeach
+
+    @endif
+
+
 <h3>Skills</h3>
 
 
@@ -89,6 +118,7 @@
 
 <p>{{ $skill_type->name }}</p>
 <p>
+
 @foreach ($skill_type->skills as $skill)
 {{ $skill->name .' | ' }}
 @endforeach

@@ -33,3 +33,15 @@ Route::get('/dashboard', function () {
 Route::get('/login', function () {
     return redirect('/admin');
 })->name('login');
+
+Route::get('/email/verify/already-success', function(){
+   return view('VerificationAlreadyVerified');
+}) ;
+Route::get('/email/verify/success',function(){
+   return view('VerificationSuccessful');
+}) ;
+
+
+
+
+       

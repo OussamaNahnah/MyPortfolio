@@ -21,7 +21,8 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
@@ -42,7 +43,7 @@ class UserResource extends Resource
                 ->maxLength(255),
                 DatePicker::make('birthday')->required(),
                 Forms\Components\TextInput::make('email')
-                ->disabled($disabled = true)
+                ->disabled(fn (string $context): bool => $context != 'create')
                 ->required()
                 ->string()
                 ->minLength(4)
@@ -126,4 +127,8 @@ class UserResource extends Resource
                return parent::getEloquentQuery()->where('id', auth()->user()->id);
            }
        }
+       protected static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
 }

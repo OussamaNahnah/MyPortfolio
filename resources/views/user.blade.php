@@ -93,8 +93,9 @@
                             <li><a href="#other_info">OtherInfromation</a></li>
                         @endif
                         <li><a href="#contact">Contact</a></li>
-
+                        
                         <li><a href="{{ route('cv', [$user->id])}}">Download CV</a></li> 
+                        <li><a href="{{ route('admin') }}">Dashboard</a></li>
                         <li><a href="{{ route('index') }}">Back</a></li>
                     </ul>
                 </nav>
@@ -177,7 +178,9 @@
                     <ul class="award-list list-flat">
                         <li><a href="{{ $project->link }}">{{ $project->name }}</a></li>
                         <li>{{ $project->description }}</li>
-                        <li>Php Java JavaScript XML Html Css cpp</li>
+                        <li>  @foreach ($project->skills as $skill)
+                           {{ $skill->name .' '}}
+                        @endforeach</li>
 
                     </ul>
                     <div class="owl-carousel">

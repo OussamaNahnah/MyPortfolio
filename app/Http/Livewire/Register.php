@@ -3,9 +3,10 @@
 namespace App\Http\Livewire;
 
 use Filament\Forms;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use JeffGreco13\FilamentBreezy\FilamentBreezy;
 use JeffGreco13\FilamentBreezy\Http\Livewire\Auth\Register as FilamentBreezyRegister;
-use Illuminate\Support\Facades\Hash;
 
 class Register extends FilamentBreezyRegister
 {
@@ -15,25 +16,25 @@ class Register extends FilamentBreezyRegister
     public $email;
 
     public $password;
+
     public $fullname;
 
     // Override the getFormSchema method and merge the default fields then add your own.
     protected function getFormSchema(): array
     {
-        return array_merge([ Forms\Components\TextInput::make('fullname')
+        return array_merge([Forms\Components\TextInput::make('fullname')
         ->label('fullname')
         ->required()
         ->string()
         ->minLength(4)
-        ->maxLength(255)
-       ,
+        ->maxLength(255),
             Forms\Components\TextInput::make('username')
+            ->rules([Rule::unique('users', 'username')])
             ->label('username')
             ->required()
             ->string()
             ->minLength(4)
-            ->maxLength(255)
-            ->unique(ignoreRecord: true),
+            ->maxLength(255),
             Forms\Components\TextInput::make('email')
                 ->label(__('filament-breezy::default.fields.email'))
                 ->required()
@@ -46,8 +47,8 @@ class Register extends FilamentBreezyRegister
                 ->string()
                 ->minLength(6)
                 ->maxLength(255)
-                //->rules(app(FilamentBreezy::class)->getPasswordRules())
-                ,
+            //->rules(app(FilamentBreezy::class)->getPasswordRules())
+            ,
             Forms\Components\TextInput::make('password_confirm')
                 ->label(__('filament-breezy::default.fields.password_confirm'))
                 ->required()
@@ -63,7 +64,7 @@ class Register extends FilamentBreezyRegister
         //$preparedData = parent::prepareModelData($data);
         $preparedData['username'] = $this->username;
         $preparedData['email'] = $this->email;
-        $preparedData['password'] =Hash::make($this->password) ;
+        $preparedData['password'] = Hash::make($this->password);
         $preparedData['fullname'] = $this->fullname;
 
         return $preparedData;

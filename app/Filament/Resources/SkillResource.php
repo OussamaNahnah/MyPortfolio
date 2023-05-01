@@ -16,7 +16,11 @@ class SkillResource extends Resource
 {
     protected static ?string $model = Skill::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-cog';
+
+
+    protected static ?string $navigationGroup = 'Project Management';
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
@@ -26,7 +30,7 @@ class SkillResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')->required()
                 ->string()
-                ->minLength(4)
+                ->minLength(2)
                 ->maxLength(255),
 
                 BelongsToSelect::make('skill_type_id')

@@ -16,7 +16,11 @@ class PhoneNumberResource extends Resource
 {
     protected static ?string $model = PhoneNumber::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-phone';
+
+    protected static ?string $navigationGroup = 'Other Infromation';
+    protected static ?int $navigationSort = 3;
+  //  protected static ?string $navigationLabel = 'Custom Navigation Label';
 
     public static function form(Form $form): Form
     {

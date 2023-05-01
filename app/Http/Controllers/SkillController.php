@@ -60,7 +60,7 @@ class SkillController extends Controller
 
         $validator = Validator::make($request->all(), [
 
-            'name' => 'required|string|min:4|max:255 ',
+            'name' => 'required|string|min:2|max:255 ',
 
         ]);
         //return failed validation
@@ -116,7 +116,7 @@ class SkillController extends Controller
     {
         // echo 'userid '.auth()->user()->id;
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|min:4|max:255  ',
+            'name' => 'required|string|min:2|max:255  ',
         ]);
         //return failed validation
 

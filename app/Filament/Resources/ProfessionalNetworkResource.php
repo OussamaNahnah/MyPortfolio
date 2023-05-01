@@ -20,7 +20,9 @@ class ProfessionalNetworkResource extends Resource
 {
     protected static ?string $model = ProfessionalNetwork::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-globe-alt';
+    protected static ?string $navigationGroup = 'Other Infromation';
+    protected static ?int $navigationSort =2;
 
     public static function form(Form $form): Form
     {

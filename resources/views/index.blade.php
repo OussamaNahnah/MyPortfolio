@@ -88,9 +88,9 @@
 
         .i-am-centered {
             margin: auto;
-            max-width: 300px;
+            width: 50%; 
+            padding: 10px;
         }
-
         a:link {
             color: #6D5D6E;
         }
@@ -164,7 +164,7 @@
         </div>
 
         <div class="i-am-centered">
-            <div class="row"> {{ $users->links() }}</div>
+            <div class="row i-am-centered"> {{ $users->links() }}</div>
         </div>
 
 
