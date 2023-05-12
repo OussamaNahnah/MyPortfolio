@@ -46,12 +46,12 @@
 </p>
 
 
-<p>
+<p ><a href="{{$user->principal_link()}}">
 @if ($user->principal_link()!=null)
 {{$user->principal_link()}}
 @endif
 
-
+    </a>
 </p>
 </center></div>
 <hr>

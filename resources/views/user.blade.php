@@ -186,8 +186,8 @@
                     <div class="owl-carousel">
                         @foreach ($project->getMedia('images') as $image)
                             <div>
-                                <img onclick="window.open(this.src)" src="{{ $image->getUrl() }}"
-                                    alt="Girl in a jacket" width="100" height="100">
+                                <img onclick="window.open('{{ $image->getUrl('') }}')" src="{{ $image->getUrl('thumb') }}"
+                                    width="100" height="100">
                             </div>
                         @endforeach
                     </div>
