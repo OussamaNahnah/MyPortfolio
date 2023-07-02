@@ -27,7 +27,8 @@ In addition , i used two  plugins :
 	> The second package you used is[ Filament Breezy ](https://filamentphp.com/plugins/breezy), which provides registration, email verification, and password reset functionality .
 
 - [PDF Dom ](https://dompdf.github.io): i utilized the PDF Dom library to generate the PDF cv documents on the website.
-# Postman
+# REST API queries :
+available here
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/17735139-be9c8c48-ae11-4f8e-ad7b-3e81aae3b13d?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D17735139-be9c8c48-ae11-4f8e-ad7b-3e81aae3b13d%26entityType%3Dcollection%26workspaceId%3D1465953d-50e4-4785-b3ba-61e2ad701cff)
 
 # Schema
