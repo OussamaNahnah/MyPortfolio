@@ -27,7 +27,8 @@ In addition , i used two  plugins :
 	> The second package you used is[ Filament Breezy ](https://filamentphp.com/plugins/breezy), which provides registration, email verification, and password reset functionality .
 
 - [PDF Dom ](https://dompdf.github.io): i utilized the PDF Dom library to generate the PDF cv documents on the website.
-
+# Postman
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/17735139-be9c8c48-ae11-4f8e-ad7b-3e81aae3b13d?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D17735139-be9c8c48-ae11-4f8e-ad7b-3e81aae3b13d%26entityType%3Dcollection%26workspaceId%3D1465953d-50e4-4785-b3ba-61e2ad701cff)
 
 # Schema
 
@@ -135,11 +136,22 @@ classDiagram
       }
 ```
 
-# Vedio && Screenshots
-
 # Contact us:
 - **email:** oussamanh7@gmail.com 
 - **phone:** +213696900164
 - **lindekin:** https://www.linkedin.com/in/oussamanahnah/
 - **fb:** https://www.facebook.com/osma0k/
 
+# Vedio && Screenshots
+![](https://github.com/OussamaNahnah/MyPortfolio/blob/admin/screenshots/screen0.png)
+![](https://github.com/OussamaNahnah/MyPortfolio/blob/admin/screenshots/screen1.png)
+![](https://github.com/OussamaNahnah/MyPortfolio/blob/admin/screenshots/screen2.png)
+![](https://github.com/OussamaNahnah/MyPortfolio/blob/admin/screenshots/screen3.png)
+![](https://github.com/OussamaNahnah/MyPortfolio/blob/admin/screenshots/screen4.png)
+![](https://github.com/OussamaNahnah/MyPortfolio/blob/admin/screenshots/screen5.png)
+![](https://github.com/OussamaNahnah/MyPortfolio/blob/admin/screenshots/screen6.png)
+![](https://github.com/OussamaNahnah/MyPortfolio/blob/admin/screenshots/screen7.png)
+![](https://github.com/OussamaNahnah/MyPortfolio/blob/admin/screenshots/screen8.png)
+![](https://github.com/OussamaNahnah/MyPortfolio/blob/admin/screenshots/screen9.png)
+![](https://github.com/OussamaNahnah/MyPortfolio/blob/admin/screenshots/screen10.png)
+![](https://github.com/OussamaNahnah/MyPortfolio/blob/admin/screenshots/screen11.png)
