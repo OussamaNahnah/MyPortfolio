@@ -33,7 +33,7 @@ class ProjController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
         $project = Project::where('user_id', $user_id)->get();
         //return with successful operation message
@@ -58,7 +58,7 @@ class ProjController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
 
         // insert the new project
@@ -89,7 +89,7 @@ class ProjController extends Controller
 
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
         $project = Project::find($id);
         //return with successful operation message
@@ -115,7 +115,7 @@ class ProjController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
 
         $project = Project::where('id', $id)->where('user_id', auth()->user()->id)->first();
@@ -123,7 +123,7 @@ class ProjController extends Controller
         if ($project == null) {
             return response()->json([
                 'message' => 'Your id does not exist or this item not your s',
-            ], 400);
+            ], 422);
         }
         if ($request->has('name')) {
             $project->name = $request->input('name');
@@ -150,14 +150,14 @@ class ProjController extends Controller
         if ($project == null) {
             return response()->json([
                 'message' => 'Your id does not exist or this item not your s',
-            ], 400);
+            ], 422);
         }
         //remove all the projest's images
         if (! $request->hasFile('image')) {
             return response()->json(
                 [
                     'message' => 'No image !',
-                ], 400);
+                ], 422);
         }
 
         //update the image
@@ -182,7 +182,7 @@ class ProjController extends Controller
         if ($project == null) {
             return response()->json([
                 'message' => 'Your id does not exist or this item not your s',
-            ], 400);
+            ], 422);
         }
         //remove all the projest's images
         $project->clearMediaCollection('images');
@@ -206,7 +206,7 @@ class ProjController extends Controller
         if ($project == null) {
             return response()->json([
                 'message' => 'Your id does not exist or this item not your s',
-            ], 400);
+            ], 422);
         }
         $project->delete();
         //return with successful operation message
@@ -223,7 +223,7 @@ class ProjController extends Controller
         if (! $isProExist) {
             return response()->json([
                 'message' => 'Your Project does not exist or its not your s',
-            ], 400);
+            ], 422);
         }
 
         $isOwnedByUser = User::where('id', '=', auth()->user()->id)->whereHas('skill_types', function ($q) use ($skill_id) {
@@ -235,7 +235,7 @@ class ProjController extends Controller
         if (! $isOwnedByUser) {
             return response()->json([
                 'message' => 'Your Skill does not exist or its not your s',
-            ], 400);
+            ], 422);
         }
 
         $project = Project::find($project_id);
@@ -256,7 +256,7 @@ class ProjController extends Controller
         if (! $isProExist) {
             return response()->json([
                 'message' => 'Your Project does not exist or its not your s',
-            ], 400);
+            ], 422);
         }
 
         $isOwnedByUser = User::where('id', '=', auth()->user()->id)->whereHas('skill_types', function ($q) use ($skill_id) {
@@ -268,7 +268,7 @@ class ProjController extends Controller
         if (! $isOwnedByUser) {
             return response()->json([
                 'message' => 'Your Skill does not exist or its not your s',
-            ], 400);
+            ], 422);
         }
 
         $project = Project::find($project_id);

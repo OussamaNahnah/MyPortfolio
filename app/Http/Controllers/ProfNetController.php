@@ -34,7 +34,7 @@ class ProfNetController extends Controller
         // return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
         //get the associated Professional Networks
         $pro_nets = ProfessionalNetwork::where('user_id', $user_id)->get();
@@ -64,7 +64,7 @@ class ProfNetController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
 
         // insert the new professional network
@@ -105,7 +105,7 @@ class ProfNetController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
         // $pro_net = ProfessionalNetwork::where('id', $id)->first();
         $pro_net = ProfessionalNetwork::find($id);
@@ -133,7 +133,7 @@ class ProfNetController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
 
         $pro_net = ProfessionalNetwork::where('id', $id)->where('user_id', auth()->user()->id)->first();
@@ -141,7 +141,7 @@ class ProfNetController extends Controller
         if ($pro_net == null) {
             return response()->json([
                 'message' => 'Your id does not exist or this item not your s',
-            ], 400);
+            ], 422);
         }
         if ($request->has('name')) {
             $pro_net->name = $request->input('name');
@@ -168,7 +168,7 @@ class ProfNetController extends Controller
             return response()->json(
                 [
                     'message' => 'No icon !',
-                ], 400);
+                ], 422);
         }
 
         $pro_net = ProfessionalNetwork::where('id', $id)->where('user_id', auth()->user()->id)->first();
@@ -176,7 +176,7 @@ class ProfNetController extends Controller
         if ($pro_net == null) {
             return response()->json([
                 'message' => 'Your id does not exist or this item not your s',
-            ], 400);
+            ], 422);
         }
 
         $image = $request->file('icon');
@@ -202,7 +202,7 @@ class ProfNetController extends Controller
         if ($pro_net == null) {
             return response()->json([
                 'message' => 'Your id does not exist or this item not your s',
-            ], 400);
+            ], 422);
         }
         $pro_net->delete();
         //return with successful operation message

@@ -32,7 +32,7 @@ class EduController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
         $education = Education::where('user_id', $user_id)->get();
         //return with successful operation message
@@ -59,7 +59,7 @@ class EduController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
 
         // insert the new education
@@ -90,7 +90,7 @@ class EduController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
         $education = Education::find($id);
         //return with successful operation message
@@ -117,7 +117,7 @@ class EduController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
 
         $education = Education::where('id', $id)->where('user_id', auth()->user()->id)->first();
@@ -126,7 +126,7 @@ class EduController extends Controller
         if ($education == null) {
             return response()->json([
                 'message' => 'Your id does not exist or this item not your s',
-            ], 400);
+            ], 422);
         }
         if ($request->has('nameschool')) {
             $education->nameschool = $request->input('nameschool');
@@ -160,7 +160,7 @@ class EduController extends Controller
         if ($education == null) {
             return response()->json([
                 'message' => 'Your id does not exist or this item not your s',
-            ], 400);
+            ], 422);
         }
         $education->delete();
         //return with successful operation message

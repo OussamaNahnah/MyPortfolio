@@ -33,7 +33,7 @@ class JobResController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
         $job_responsibility = JobResponsibility::where('experience_id', $experience_id)->get();
         //return with successful operation message
@@ -55,7 +55,7 @@ class JobResController extends Controller
         if ($experience == null) {
             return response()->json([
                 'message' => 'Your id does not exist or this item not your s',
-            ], 400);
+            ], 422);
         }
         // validation fields
         $validator = Validator::make($request->all(), [
@@ -66,7 +66,7 @@ class JobResController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
 
         // insert the new job responsibility
@@ -97,7 +97,7 @@ class JobResController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
         $job_responsibility = JobResponsibility::find($id);
         //return with successful operation message
@@ -120,7 +120,7 @@ class JobResController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
         $isOwnedByUser = User::where('id', '=', auth()->user()->id)->whereHas('experiences', function ($q) use ($id) {
             $q->whereHas('job_responsibilities', function ($q) use ($id) {
@@ -131,7 +131,7 @@ class JobResController extends Controller
         if (! $isOwnedByUser) {
             return response()->json([
                 'message' => 'Your id does not exist or this item not your s',
-            ], 400);
+            ], 422);
         }
 
         $job_responsibility = JobResponsibility::find($id);
@@ -160,7 +160,7 @@ class JobResController extends Controller
         if (! $isOwnedByUser) {
             return response()->json([
                 'message' => 'Your id does not exist or this item not your s',
-            ], 400);
+            ], 422);
         }
 
         $job_responsibility = JobResponsibility::find($id);

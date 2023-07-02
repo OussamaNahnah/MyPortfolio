@@ -34,7 +34,7 @@ class SkillController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
         $skill = Skill::where('skill_type_id', $skill_type_id)->get();
         //return with successful operation message
@@ -55,7 +55,7 @@ class SkillController extends Controller
         if ($skill_type == null) {
             return response()->json([
                 'message' => 'Your id does not exist or this item not your s',
-            ], 400);
+            ], 422);
         }
 
         $validator = Validator::make($request->all(), [
@@ -67,7 +67,7 @@ class SkillController extends Controller
 
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
 
         // insert the new skill
@@ -98,7 +98,7 @@ class SkillController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
         $skill = Skill::find($id);
         //return with successful operation message
@@ -122,7 +122,7 @@ class SkillController extends Controller
 
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
         $isOwnedByUser = User::where('id', '=', auth()->user()->id)->whereHas('skill_types', function ($q) use ($id) {
             $q->whereHas('skills', function ($q) use ($id) {
@@ -133,7 +133,7 @@ class SkillController extends Controller
         if (! $isOwnedByUser) {
             return response()->json([
                 'message' => 'Your id does not exist or this item not your s',
-            ], 400);
+            ], 422);
         }
 
         $skill = Skill::find($id);
@@ -162,7 +162,7 @@ class SkillController extends Controller
         if (! $isOwnedByUser) {
             return response()->json([
                 'message' => 'Your id does not exist or this item not your s',
-            ], 400);
+            ], 422);
         }
 
         $skill = Skill::find($id);

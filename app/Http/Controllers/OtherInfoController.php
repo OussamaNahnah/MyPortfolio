@@ -33,14 +33,14 @@ class OtherInfoController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
         $other_info = OtherInfo::where('user_id', $user_id)->first();
         //return failed show:because this user havent this skilltype
         if ($other_info == null) {
             return response()->json([
                 'message' => $user_id.' havent other info',
-            ], 400);
+            ], 422);
         }
         //return with successful operation message
         return response()->json(
@@ -65,7 +65,7 @@ class OtherInfoController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
 
         $validator = Validator::make($request->all(), [
@@ -76,7 +76,7 @@ class OtherInfoController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
 
         // insert the new other infromation
@@ -104,7 +104,7 @@ class OtherInfoController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
         $user_id = auth()->user()->id;
         $other_info = OtherInfo::where('user_id', $user_id)->first();
@@ -112,7 +112,7 @@ class OtherInfoController extends Controller
         if ($other_info == null) {
             return response()->json([
                 'message' => 'you havent other info',
-            ], 400);
+            ], 422);
         }
 
         $other_info->description = $request->input('description');
@@ -135,7 +135,7 @@ class OtherInfoController extends Controller
         if ($other_info == null) {
             return response()->json([
                 'message' => 'you have no other info',
-            ], 400);
+            ], 422);
         }
         $other_info->delete();
         //return with successful operation message

@@ -32,7 +32,7 @@ class PhoNumController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
         $phone_number = PhoneNumber::where('user_id', $user_id)->get();
         //return with successful operation message
@@ -56,7 +56,7 @@ class PhoNumController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
 
         // insert the new phone number
@@ -87,7 +87,7 @@ class PhoNumController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
         $phone_number = PhoneNumber::find($id);
         //return with successful operation message
@@ -110,7 +110,7 @@ class PhoNumController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
 
         $phone_number = PhoneNumber::where('id', $id)->where('user_id', auth()->user()->id)->first();
@@ -118,7 +118,7 @@ class PhoNumController extends Controller
         if ($phone_number == null) {
             return response()->json([
                 'message' => 'Your id does not exist or this item not your s',
-            ], 400);
+            ], 422);
         }
 
         $phone_number->numberphone = $request->input('numberphone');
@@ -142,7 +142,7 @@ class PhoNumController extends Controller
         if ($phone_number == null) {
             return response()->json([
                 'message' => 'Your id does not exist or this item not your s',
-            ], 400);
+            ], 422);
         }
         $phone_number->delete();
         //return with successful operation message

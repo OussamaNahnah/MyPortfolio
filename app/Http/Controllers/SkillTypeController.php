@@ -33,7 +33,7 @@ class SkillTypeController extends Controller
 
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
         $skill_type = SkillType::where('user_id', $user_id)->get();
         //return with successful operation message
@@ -58,7 +58,7 @@ class SkillTypeController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
 
         // insert the new skill type
@@ -90,7 +90,7 @@ class SkillTypeController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
         $skill_type = SkillType::find($id);
         //return with successful operation message
@@ -113,7 +113,7 @@ class SkillTypeController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
 
         $skill_type = SkillType::where('id', $id)->where('user_id', auth()->user()->id)->first();
@@ -123,7 +123,7 @@ class SkillTypeController extends Controller
         if ($skill_type == null) {
             return response()->json([
                 'message' => 'Your id does not exist or this item not your s',
-            ], 400);
+            ], 422);
         }
 
         $skill_type->name = $request->input('name');
@@ -146,7 +146,7 @@ class SkillTypeController extends Controller
         if ($skill_type == null) {
             return response()->json([
                 'message' => 'Your id does not exist or this item not your s',
-            ], 400);
+            ], 422);
         }
         $skill_type->delete();
         //return with successful operation message

@@ -32,7 +32,7 @@ class AuthController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
         $user = User::find($id);
         //return with successful operation message
@@ -71,7 +71,7 @@ class AuthController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
         // insert the new user
         $user = User::create(array_merge(
@@ -112,7 +112,7 @@ class AuthController extends Controller
         //return failed validation
         if ($validator->fails()) {
             return response()->json(
-                $validator->errors()->toJson(), 400);
+                $validator->errors()->toJson(), 422);
         }
         // update the user
         $user = User::find(auth()->user()->id);
@@ -151,7 +151,7 @@ class AuthController extends Controller
                return response()->json(
                    [
                        'message' => 'No image !',
-                   ], 400);
+                   ], 422);
            }
            //the the user instance
            $user = User::find(auth()->user()->id);
